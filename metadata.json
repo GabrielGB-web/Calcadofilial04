@@ -1,0 +1,8 @@
+{
+  "name": "Catálogo Francal Calçados - Catálogo Otimizado 2026",
+  "description": "Catálogo inteligente de calçados com banco de dados otimizado, agrupamento preciso de grades e famílias, carregamento ultra-rápido com lazy loading e sincronização Google Sheets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
