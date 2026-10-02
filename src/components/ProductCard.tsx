@@ -52,12 +52,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <div className="bg-white rounded-xl border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-slate-300 transition-all duration-200 flex flex-col overflow-hidden group">
-      {/* Top Image Container */}
-      <div className="relative">
+      {/* Top Image Container with Standardized Square Vitrine */}
+      <div className="relative bg-white">
         <LazyImage
           src={product.imagem}
           alt={product.descricao}
-          aspectRatio="aspect-[4/3]"
+          aspectRatio="aspect-square"
+          fitMode="contain"
+          padding="p-3 sm:p-4"
           onClick={() => onOpenDetails(product)}
         />
 
@@ -135,7 +137,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Model Title */}
           <h3
             onClick={() => onOpenDetails(product)}
-            className="font-bold text-slate-900 text-xs sm:text-sm line-clamp-2 hover:text-amber-600 cursor-pointer transition-colors leading-snug"
+            className="font-bold text-slate-900 text-xs sm:text-sm line-clamp-2 min-h-[2.25rem] sm:min-h-[2.5rem] hover:text-amber-600 cursor-pointer transition-colors leading-snug"
             title={product.descricao}
           >
             {product.descricao}

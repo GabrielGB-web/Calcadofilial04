@@ -12,6 +12,8 @@ import {
   Box,
   Tag,
   Share2,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { ShoeModel, ShoeSize } from '../types/catalog';
 
@@ -43,6 +45,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const [copiedBarcode, setCopiedBarcode] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [isDarkBackdrop, setIsDarkBackdrop] = useState(false);
 
   useEffect(() => {
     if (product && product.tamanhos.length > 0) {
@@ -163,26 +166,59 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="md:w-1/2 bg-slate-950 flex flex-col items-center justify-center relative p-6 min-h-[300px] md:min-h-[460px] select-none"
+          className={`md:w-1/2 flex flex-col items-center justify-center relative p-6 min-h-[320px] md:min-h-[480px] select-none transition-colors duration-200 md:border-r ${
+            isDarkBackdrop
+              ? 'bg-slate-950 border-slate-800'
+              : 'bg-gradient-to-b from-slate-50 via-white to-slate-100/60 border-slate-200'
+          }`}
         >
-          <img
-            src={product.imagem || 'https://via.placeholder.com/600x450?text=Sem+Imagem'}
-            alt={product.descricao}
-            className="max-h-[320px] md:max-h-[440px] max-w-full object-contain rounded-lg drop-shadow-2xl transition-transform hover:scale-105 duration-300 pointer-events-none"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x450?text=Imagem+Indisponivel';
-            }}
-          />
+          {/* Subtle Studio Glow Pedestal */}
+          <div className="absolute inset-0 bg-radial from-slate-200/20 via-transparent to-transparent pointer-events-none" />
+
+          {/* Standardized Footwear Display Canvas */}
+          <div className="w-full h-full max-h-[340px] md:max-h-[440px] flex items-center justify-center p-2 sm:p-4">
+            <img
+              src={product.imagem || 'https://via.placeholder.com/600x450?text=Sem+Imagem'}
+              alt={product.descricao}
+              className={`max-h-[290px] md:max-h-[410px] max-w-full object-contain transition-transform hover:scale-105 duration-300 pointer-events-none ${
+                isDarkBackdrop
+                  ? 'drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]'
+                  : 'drop-shadow-[0_10px_20px_rgba(0,0,0,0.08)]'
+              }`}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://via.placeholder.com/600x450?text=Imagem+Indisponivel';
+              }}
+            />
+          </div>
 
           {/* Quick Favorite on image */}
           <button
             type="button"
             onClick={() => onToggleFavorite(product)}
-            className={`absolute top-4 left-4 p-2.5 rounded-full backdrop-blur-md transition-transform duration-150 active:scale-90 shadow-lg cursor-pointer ${
-              isFavorited ? 'bg-red-500 text-white' : 'bg-black/50 text-white hover:text-red-400'
+            className={`absolute top-4 left-4 p-2.5 rounded-full backdrop-blur-md transition-transform duration-150 active:scale-90 shadow-md cursor-pointer ${
+              isFavorited
+                ? 'bg-red-500 text-white'
+                : isDarkBackdrop
+                ? 'bg-white/20 text-white hover:text-red-400'
+                : 'bg-white/90 text-slate-700 hover:text-red-500 border border-slate-200'
             }`}
           >
             <Heart className={`w-5 h-5 ${isFavorited ? 'fill-current' : ''}`} />
+          </button>
+
+          {/* Backdrop Mode Toggle (Light/Dark Studio) */}
+          <button
+            type="button"
+            onClick={() => setIsDarkBackdrop(!isDarkBackdrop)}
+            title={isDarkBackdrop ? 'Mudar para Fundo Claro' : 'Mudar para Fundo Escuro'}
+            aria-label="Alternar fundo da imagem"
+            className={`absolute top-4 left-16 p-2.5 rounded-full backdrop-blur-md shadow-md transition-all active:scale-90 cursor-pointer ${
+              isDarkBackdrop
+                ? 'bg-white/20 text-amber-300 hover:bg-white/30'
+                : 'bg-white/90 text-slate-700 hover:bg-white border border-slate-200'
+            }`}
+          >
+            {isDarkBackdrop ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
 
           {/* Quick WhatsApp Share Button on image */}
@@ -190,14 +226,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             type="button"
             onClick={handleShareWhatsApp}
             title="Enviar este calçado no WhatsApp"
-            className="absolute top-4 right-14 sm:right-16 p-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg transition-transform active:scale-90 cursor-pointer"
+            className="absolute top-4 right-14 sm:right-16 p-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-md transition-transform active:scale-90 cursor-pointer"
           >
             <Share2 className="w-5 h-5" />
           </button>
 
           {/* Image badge footer */}
-          <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-slate-400">
-            <span className="sm:hidden text-amber-300 font-medium">Deslize para o lado para ver o próximo ➔</span>
+          <div className={`absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs ${
+            isDarkBackdrop ? 'text-slate-400' : 'text-slate-500'
+          }`}>
+            <span className="sm:hidden text-amber-500 font-semibold">Deslize p/ ver o próximo ➔</span>
             <span className="hidden sm:inline">Use as setas ← → para navegar</span>
             <span>Tecla F p/ favoritar</span>
           </div>

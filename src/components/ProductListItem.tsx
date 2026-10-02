@@ -42,11 +42,13 @@ export const ProductListItem: React.FC<ProductListItemProps> = ({
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-3 shadow-xs hover:shadow-md transition-all flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
       {/* Thumbnail */}
-      <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg overflow-hidden flex-shrink-0 relative">
+      <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-lg overflow-hidden flex-shrink-0 relative bg-white border border-slate-100 flex items-center justify-center">
         <LazyImage
           src={product.imagem}
           alt={product.descricao}
           aspectRatio="aspect-square"
+          fitMode="contain"
+          padding="p-1.5 sm:p-2"
           onClick={() => onOpenDetails(product)}
         />
         <button
